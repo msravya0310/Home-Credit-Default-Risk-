@@ -67,89 +67,108 @@ st.subheader("📈 Demographic Visuals")
 # Graphs
 #==================================================
 
-# 1. Histogram — Age distribution (all)
-fig, ax = plt.subplots(figsize=(8,6))
-sns.histplot(df['AGE_YEARS'], bins=30, kde=True)
-plt.title('Age Distribution')
-plt.xlabel('AGE_YEARS')
-plt.ylabel('Count')
-st.pyplot(fig)
 
-#2. Histogram — Age by Target (overlay)
-fig, ax = plt.subplots(figsize=(8,6))
-sns.histplot(data=df, x='AGE_YEARS', hue='TARGET', bins=30, kde=True, alpha=0.5)
-plt.title('Age Distribution by Target')
-plt.xlabel('AGE_YEARS')
-plt.ylabel('Count')
-st.pyplot(fig)
+col1,col2 = st.columns(2)
+with col1:
+    #  Histogram — Age distribution (all)
+    fig, ax = plt.subplots(figsize=(8,6))
+    sns.histplot(df['AGE_YEARS'], bins=30, kde=True)
+    plt.title('Age Distribution')
+    plt.xlabel('AGE_YEARS')
+    plt.ylabel('Count')
+    st.pyplot(fig)
 
-# 3. Bar — Gender distribution.6
-fig, ax = plt.subplots(figsize=(8,5))
-sns.countplot(x='CODE_GENDER', data=df)
-plt.title('Gender Distribution')
-plt.xlabel('CODE_GENDER')
-plt.ylabel('Count')
-st.pyplot(fig)
+with col2:
+    # Histogram — Age by Target (overlay)
+    fig, ax = plt.subplots(figsize=(8,6))
+    sns.histplot(data=df, x='AGE_YEARS', hue='TARGET', bins=30, kde=True, alpha=0.5)
+    plt.title('Age Distribution by Target')
+    plt.xlabel('AGE_YEARS')
+    plt.ylabel('Count')
+    st.pyplot(fig)
 
-# 4. Bar — Family Status distribution
-fig, ax = plt.subplots(figsize=(7,5))
-sns.countplot(x='NAME_FAMILY_STATUS', data=df)
-plt.title('Family Status Distribution')
-plt.xlabel('NAME_FAMILY_STATUS')
-plt.ylabel('Count')
-plt.xticks(rotation=45)
-st.pyplot(fig)
+col3,col4 = st.columns(2)
+with col3:
+    #  Bar — Gender distribution.6
+    fig, ax = plt.subplots(figsize=(8,5))
+    sns.countplot(x='CODE_GENDER', data=df)
+    plt.title('Gender Distribution')
+    plt.xlabel('CODE_GENDER')
+    plt.ylabel('Count')
+    st.pyplot(fig)
 
-# 5. Bar — Education distribution
-fig, ax = plt.subplots(figsize=(7,5))
-sns.countplot(x='NAME_EDUCATION_TYPE', data=df)
-plt.title('Education Distribution')
-plt.xlabel('NAME_EDUCATION_TYPE')
-plt.ylabel('Count')
-plt.xticks(rotation=45)
-st.pyplot(fig)
+with col4:
+    #  Bar — Family Status distribution
+    fig, ax = plt.subplots(figsize=(7,5))
+    sns.countplot(x='NAME_FAMILY_STATUS', data=df)
+    plt.title('Family Status Distribution')
+    plt.xlabel('NAME_FAMILY_STATUS')
+    plt.ylabel('Count')
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
 
-# 6. Bar — Occupation distribution (top 10)
-fig, ax = plt.subplots(figsize=(9,5))
-top_occupations = df['OCCUPATION_TYPE'].value_counts().nlargest(10)
-sns.barplot(x=top_occupations.index, y=top_occupations.values)
-plt.title('Top 10 Occupations')
-plt.xlabel('OCCUPATION_TYPE')
-plt.ylabel('Count')
-plt.xticks(rotation=45)
-st.pyplot(fig)
 
-# 7. Pie — Housing Type distribution
-fig, ax = plt.subplots(figsize=(8,6))
-df['NAME_HOUSING_TYPE'].value_counts().plot.pie(autopct='%1.1f%%', startangle=90)
-plt.title('Housing Type Distribution')
-plt.xlabel("NAME_HOUSING_TYPE")
-plt.ylabel('')
-st.pyplot(fig)
+col5,col6 = st.columns(2)
+with col5:
+    #  Bar — Education distribution
+    fig, ax = plt.subplots(figsize=(8,5))
+    sns.countplot(x='NAME_EDUCATION_TYPE', data=df)
+    plt.title('Education Distribution')
+    plt.xlabel('NAME_EDUCATION_TYPE')
+    plt.ylabel('Count')
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
 
-# 8. Countplot — CNT_CHILDREN
-fig, ax = plt.subplots(figsize=(8,5))
-sns.countplot(x='CNT_CHILDREN', data=df)
-plt.title('Number of Children')
-plt.xlabel('CNT_CHILDREN')
-plt.ylabel('Count')
-st.pyplot(fig)
+with col6:
+    #  Bar — Occupation distribution (top 10)
+    fig, ax = plt.subplots(figsize=(8,5))
+    top_occupations = df['OCCUPATION_TYPE'].value_counts().nlargest(10)
+    sns.barplot(x=top_occupations.index, y=top_occupations.values)
+    plt.title('Top 10 Occupations')
+    plt.xlabel('OCCUPATION_TYPE')
+    plt.ylabel('Count')
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
 
-# 9. Boxplot — Age vs Target
-fig, ax = plt.subplots(figsize=(8,6))
-sns.boxplot(x='TARGET', y='AGE_YEARS', data=df)
-plt.title('Age vs Target')
-plt.xlabel('Target')
-plt.ylabel('AGE_YEARS')
-st.pyplot(fig)
 
-# 10. Heatmap — Corr(Age, Children, Family Size, TARGET)
-fig, ax = plt.subplots(figsize=(8,6))
-cols = ['AGE_YEARS', 'CNT_CHILDREN', 'CNT_FAM_MEMBERS', 'TARGET']
-corr = df[cols].corr()
-sns.heatmap(corr, annot=True, cmap='coolwarm')
-plt.title('Correlation Heatmap')
-st.pyplot(fig)
+col7,col8 = st.columns(2)
+with col7:
+    #  Pie — Housing Type distribution
+    fig, ax = plt.subplots(figsize=(8,5))
+    df['NAME_HOUSING_TYPE'].value_counts().plot.pie(autopct='%1.1f%%', startangle=95)
+    plt.title('Housing Type Distribution')
+    plt.xlabel("NAME_HOUSING_TYPE")
+    plt.ylabel('')
+    st.pyplot(fig)
+
+with col8:
+    #  Countplot — CNT_CHILDREN
+    fig, ax = plt.subplots(figsize=(8,5))
+    sns.countplot(x='CNT_CHILDREN', data=df)
+    plt.title('Number of Children')
+    plt.xlabel('CNT_CHILDREN')
+    plt.ylabel('Count')
+    st.pyplot(fig)
+
+
+col9,col10 = st.columns(2)
+with col9:
+    #  Boxplot — Age vs Target
+    fig, ax = plt.subplots(figsize=(8,6))
+    sns.boxplot(x='TARGET', y='AGE_YEARS', data=df)
+    plt.title('Age vs Target')
+    plt.xlabel('Target')
+    plt.ylabel('AGE_YEARS')
+    st.pyplot(fig)
+
+with col10:
+    #  Heatmap — Corr(Age, Children, Family Size, TARGET)
+    fig, ax = plt.subplots(figsize=(8,6))
+    cols = ['AGE_YEARS', 'CNT_CHILDREN', 'CNT_FAM_MEMBERS', 'TARGET']
+    corr = df[cols].corr()
+    sns.heatmap(corr, annot=True, cmap='coolwarm')
+    plt.title('Correlation Heatmap')
+    st.pyplot(fig)
 
 # -----------------------------
 # Narrative Insights

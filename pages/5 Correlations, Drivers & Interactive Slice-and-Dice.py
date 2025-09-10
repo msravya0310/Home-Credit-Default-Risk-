@@ -71,77 +71,97 @@ st.markdown("")
 
 st.subheader("📈 Correlation & Drivers Visuals")
 
-# 1. Heatmap — Correlation (selected numerics)
-fig, ax = plt.subplots(figsize=(8,5))
-selected = ['AMT_INCOME_TOTAL', 'AMT_CREDIT', 'AMT_ANNUITY', 'AGE_YEARS', 'EMPLOYMENT_YEARS', 'CNT_FAM_MEMBERS', 'TARGET']
-sns.heatmap(df[selected].corr(), annot=True, cmap='coolwarm')
-plt.title('Correlation Heatmap (Selected Numerics)')
-st.pyplot(fig)
+#===================================================
+#Graphs
+#===================================================
 
-#  2. Bar — |Correlation| of features vs TARGET (top N)
-fig, ax = plt.subplots(figsize=(8,5))
-corrs = df[selected].corr()['TARGET'].drop('TARGET').abs().sort_values(ascending=False)
-corrs.head(5).plot(kind='bar')
-plt.title('|Correlation| with TARGET (Top 5)')
-plt.ylabel('Absolute Correlation')
-st.pyplot(fig)
+col1,col2 = st.columns(2)
+with col1:
+    #  Heatmap — Correlation (selected numerics)
+    fig, ax = plt.subplots(figsize=(8,5))
+    selected = ['AMT_INCOME_TOTAL', 'AMT_CREDIT', 'AMT_ANNUITY', 'AGE_YEARS', 'EMPLOYMENT_YEARS', 'CNT_FAM_MEMBERS', 'TARGET']
+    sns.heatmap(df[selected].corr(), annot=True, cmap='coolwarm')
+    plt.title('Correlation Heatmap (Selected Numerics)')
+    st.pyplot(fig)
+ 
+with col2:
+    #  2. Bar — |Correlation| of features vs TARGET (top N)
+    fig, ax = plt.subplots(figsize=(8,5))
+    corrs = df[selected].corr()['TARGET'].drop('TARGET').abs().sort_values(ascending=False)
+    corrs.head(5).plot(kind='bar')
+    plt.title('|Correlation| with TARGET (Top 5)')
+    plt.ylabel('Absolute Correlation')
+    st.pyplot(fig)
 
-#  3. Scatter — Age vs Credit (hue=TARGET) 
-fig, ax = plt.subplots(figsize=(8,5))
-sns.scatterplot(x='AGE_YEARS', y='AMT_CREDIT', hue='TARGET', data=df, alpha=0.5)
-plt.title('AGE vs Credit (hue=TARGET)')
-st.pyplot(fig)
 
-#  4. Scatter — Age vs Income (hue=TARGET) 
-fig, ax = plt.subplots(figsize=(8,5))
-sns.scatterplot(x='AGE_YEARS', y='AMT_INCOME_TOTAL', hue='TARGET', data=df, alpha=0.5)
-plt.title('Age vs Income (hue=TARGET)')
-st.pyplot(fig)
+col3,col4 = st.columns(2)
+with col3:
+    # Scatter — Age vs Credit (hue=TARGET) 
+    fig, ax = plt.subplots(figsize=(8,5))
+    sns.scatterplot(x='AGE_YEARS', y='AMT_CREDIT', hue='TARGET', data=df, alpha=0.5)
+    plt.title('AGE vs Credit (hue=TARGET)')
+    st.pyplot(fig)
 
-#  5. Scatter — Employment Years vs TARGET (jitter) 
-fig, ax = plt.subplots(figsize=(8,5))
-plt.scatter(df['EMPLOYMENT_YEARS'], df['TARGET'], s=10, alpha=0.5)
-plt.title('Employment Years vs TARGET')
-plt.xlabel('Years Employed')
-plt.ylabel('TARGET')
-plt.yticks([0, 1])
-st.pyplot(fig)
+with col4:
+    #  Scatter — Age vs Income (hue=TARGET) 
+    fig, ax = plt.subplots(figsize=(8,5))
+    sns.scatterplot(x='AGE_YEARS', y='AMT_INCOME_TOTAL', hue='TARGET', data=df, alpha=0.5)
+    plt.title('Age vs Income (hue=TARGET)')
+    st.pyplot(fig)
 
-# 6. Boxplot — Credit by Education 
-fig, ax = plt.subplots(figsize=(8,5))
-sns.boxplot(x='NAME_EDUCATION_TYPE', y='AMT_CREDIT', data=df)
-plt.title('Credit Amount by Education')
-plt.xticks(rotation=30)
-st.pyplot(fig)
+col5,col6 = st.columns(2)
+with col5:
+    #  Scatter — Employment Years vs TARGET (jitter) 
+    fig, ax = plt.subplots(figsize=(8,5))
+    plt.scatter(df['EMPLOYMENT_YEARS'], df['TARGET'], s=10, alpha=0.5)
+    plt.title('Employment Years vs TARGET')
+    plt.xlabel('Years Employed')
+    plt.ylabel('TARGET')
+    plt.yticks([0, 1])
+    st.pyplot(fig)
 
-# 7. Boxplot — Income by Family Status 
-fig, ax = plt.subplots(figsize=(8,5))
-sns.boxplot(x='NAME_FAMILY_STATUS', y='AMT_INCOME_TOTAL', data=df)
-plt.title('Income by Family Status')
-plt.xticks(rotation=30)
-st.pyplot(fig)
+with col6:
+    #  Boxplot — Credit by Education 
+    fig, ax = plt.subplots(figsize=(8,5))
+    sns.boxplot(x='NAME_EDUCATION_TYPE', y='AMT_CREDIT', data=df)
+    plt.title('Credit Amount by Education')
+    plt.xticks(rotation=30)
+    st.pyplot(fig)
 
-# 8. Pair Plot — Income, Credit, Annuity, TARGET 
-fig, ax = plt.subplots(figsize=(8,5))
-pairplot = sns.pairplot(df[['AMT_INCOME_TOTAL', 'AMT_CREDIT', 'AMT_ANNUITY', 'TARGET']], hue='TARGET')
-pairplot.fig.suptitle('Pair Plot — Income, Credit, Annuity, TARGET', y=1.02)
-st.pyplot(pairplot.fig)
+col7,col8 = st.columns(2)
+with col7:
+    #  Boxplot — Income by Family Status 
+    fig, ax = plt.subplots(figsize=(8,5))
+    sns.boxplot(x='NAME_FAMILY_STATUS', y='AMT_INCOME_TOTAL', data=df)
+    plt.title('Income by Family Status')
+    plt.xticks(rotation=30)
+    st.pyplot(fig)
 
-# 9. Bar — Default Rate by Gender 
-fig, ax = plt.subplots(figsize=(8,5))
-default_by_gender = df.groupby('CODE_GENDER')['TARGET'].mean()
-default_by_gender.plot(kind='bar')
-plt.title('Default Rate by Gender')
-st.pyplot(fig)
+with col8:
+    #  Pair Plot — Income, Credit, Annuity, TARGET 
+    fig, ax = plt.subplots(figsize=(8,5))
+    pairplot = sns.pairplot(df[['AMT_INCOME_TOTAL', 'AMT_CREDIT', 'AMT_ANNUITY', 'TARGET']], hue='TARGET')
+    pairplot.fig.suptitle('Pair Plot — Income, Credit, Annuity, TARGET', y=1.02)
+    st.pyplot(pairplot.fig)
 
-# 10. Bar — Default Rate by Education 
-fig, ax = plt.subplots(figsize=(8,5))
-default_by_edu = df.groupby('NAME_EDUCATION_TYPE')['TARGET'].mean()
-default_by_edu.plot(kind='bar')
-plt.title('Default Rate by Education')
-plt.ylabel('Default Rate')
-plt.xticks(rotation=30)
-st.pyplot(fig)
+col9,col10 = st.columns(2)
+with col9:
+    #  Bar — Default Rate by Gender 
+    fig, ax = plt.subplots(figsize=(8,5))
+    default_by_gender = df.groupby('CODE_GENDER')['TARGET'].mean()
+    default_by_gender.plot(kind='bar')
+    plt.title('Default Rate by Gender')
+    st.pyplot(fig)
+
+with col10:
+    #  Bar — Default Rate by Education 
+    fig, ax = plt.subplots(figsize=(8,5))
+    default_by_edu = df.groupby('NAME_EDUCATION_TYPE')['TARGET'].mean()
+    default_by_edu.plot(kind='bar')
+    plt.title('Default Rate by Education')
+    plt.ylabel('Default Rate')
+    plt.xticks(rotation=30)
+    st.pyplot(fig)
 
 #=========================================================
 # Narrative Insights

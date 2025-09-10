@@ -69,96 +69,116 @@ st.markdown("")
 #=========================================================
 st.subheader("💰 Financial Visuals")
 
-# 1. Histogram — Income distribution
-fig, ax = plt.subplots(figsize=(8,6))
-sns.histplot(df['AMT_INCOME_TOTAL'], bins=30, kde=True)
-plt.title('Income Distribution')
-plt.xlabel('Annual Income')
-plt.ylabel('Count')
-st.pyplot(fig)
+#=========================================================
+#graphs
+#==========================================================
 
-# 2. Histogram — Credit distribution
-fig, ax = plt.subplots(figsize=(8,6))
-sns.histplot(df['AMT_CREDIT'], bins=30, kde=True)
-plt.title('Credit Amount Distribution')
-plt.xlabel('Credit Amount')
-plt.ylabel('Count')
-st.pyplot(fig)
+col1,col2 = st.columns(2)
+with col1:
+    #  Histogram — Income distribution
+    fig, ax = plt.subplots(figsize=(8,6))
+    sns.histplot(df['AMT_INCOME_TOTAL'], bins=30, kde=True)
+    plt.title('Income Distribution')
+    plt.xlabel('Annual Income')
+    plt.ylabel('Count')
+    st.pyplot(fig)
 
-# 3. Histogram — Annuity distribution
-fig, ax = plt.subplots(figsize=(8,6))
-sns.histplot(df['AMT_ANNUITY'], bins=30, kde=True)
-plt.title('Annuity Distribution')
-plt.xlabel('Annuity Amount')
-plt.ylabel('Count')
-st.pyplot(fig)
+with col2:
+    # Histogram — Credit distribution
+    fig, ax = plt.subplots(figsize=(8,6))
+    sns.histplot(df['AMT_CREDIT'], bins=30, kde=True)
+    plt.title('Credit Amount Distribution')
+    plt.xlabel('Credit Amount')
+    plt.ylabel('Count')
+    st.pyplot(fig)
 
-# 4. Scatter — Income vs Credit
-fig, ax = plt.subplots(figsize=(8,6))
-sns.scatterplot(x='AMT_INCOME_TOTAL', y='AMT_CREDIT', data=df, alpha=0.3)
-plt.title('Income vs Credit Amount')
-plt.xlabel('Annual Income')
-plt.ylabel('Credit Amount')
-st.pyplot(fig)
+col3,col4 = st.columns(2)
+with col3:
+    #  Histogram — Annuity distribution
+    fig, ax = plt.subplots(figsize=(8,6))
+    sns.histplot(df['AMT_ANNUITY'], bins=30, kde=True)
+    plt.title('Annuity Distribution')
+    plt.xlabel('Annuity Amount')
+    plt.ylabel('Count')
+    st.pyplot(fig)
 
-# 5. Scatter — Income vs Annuity
-fig, ax = plt.subplots(figsize=(8,6))
-sns.scatterplot(x='AMT_INCOME_TOTAL', y='AMT_ANNUITY', data=df, alpha=0.3)
-plt.title('Income vs Annuity')
-plt.xlabel('Annual Income')
-plt.ylabel('Annuity Amount')
-st.pyplot(fig)
+with col4:
+    
+    # Scatter — Income vs Credit
+    fig, ax = plt.subplots(figsize=(8,6))
+    sns.scatterplot(x='AMT_INCOME_TOTAL', y='AMT_CREDIT', data=df, alpha=0.3)
+    plt.title('Income vs Credit Amount')
+    plt.xlabel('Annual Income')
+    plt.ylabel('Credit Amount')
+    st.pyplot(fig)
 
-# 6. Boxplot — Credit by Target
-fig, ax = plt.subplots(figsize=(8,6))
-sns.boxplot(x='TARGET', y='AMT_CREDIT', data=df)
-plt.title('Credit Amount by Default Status')
-plt.xlabel('Target (Default)')
-plt.ylabel('Credit Amount')
-st.pyplot(fig)
+col5,col6 = st.columns(2)
+with col5:
+    #  Scatter — Income vs Annuity
+    fig, ax = plt.subplots(figsize=(8,6))
+    sns.scatterplot(x='AMT_INCOME_TOTAL', y='AMT_ANNUITY', data=df, alpha=0.3)
+    plt.title('Income vs Annuity')
+    plt.xlabel('Annual Income')
+    plt.ylabel('Annuity Amount')
+    st.pyplot(fig)
 
-# 7. Boxplot — Income by Target
-fig, ax = plt.subplots(figsize=(8,6))
-sns.boxplot(x='TARGET', y='AMT_INCOME_TOTAL', data=df)
-plt.title('Income by Default Status')
-plt.xlabel('Target (Default)')
-plt.ylabel('Annual Income')
-st.pyplot(fig)
+with col6:
+    # Boxplot — Credit by Target
+    fig, ax = plt.subplots(figsize=(8,6))
+    sns.boxplot(x='TARGET', y='AMT_CREDIT', data=df)
+    plt.title('Credit Amount by Default Status')
+    plt.xlabel('Target (Default)')
+    plt.ylabel('Credit Amount')
+    st.pyplot(fig)
+    
+col7,col8 = st.columns(2)
+with col7:
+    # Boxplot — Income by Target
+    fig, ax = plt.subplots(figsize=(8,6))
+    sns.boxplot(x='TARGET', y='AMT_INCOME_TOTAL', data=df)
+    plt.title('Income by Default Status')
+    plt.xlabel('Target (Default)')
+    plt.ylabel('Annual Income')
+    st.pyplot(fig)
 
-# 8. KDE / Density — Joint Income–Credit
-fig, ax = plt.subplots(figsize=(10, 8))
-sns.scatterplot(
-    x=df['AMT_INCOME_TOTAL'], 
-    y=df['AMT_CREDIT'],
-    alpha=0.3, 
-    s=10
-)
+with col8:
+    # KDE / Density — Joint Income–Credit
+    fig, ax = plt.subplots(figsize=(10, 8))
+    sns.scatterplot(
+            x=df['AMT_INCOME_TOTAL'], 
+            y=df['AMT_CREDIT'],
+            alpha=0.3, 
+            s=10
+            )
+    plt.title('Scatterplot of Income vs Credit')
+    plt.xlabel('Annual Income')
+    plt.ylabel('Credit Amount')
+    st.pyplot(fig)
 
-plt.title('Scatterplot of Income vs Credit')
-plt.xlabel('Annual Income')
-plt.ylabel('Credit Amount')
-st.pyplot(fig)
 
-# 9. Bar — Income Brackets vs Default Rate
-fig, ax = plt.subplots(figsize=(10,8))
-bins = [0, 100000, 200000, 400000, 600000, 1_000_000, np.inf]
-labels = ['<100K', '100K-200K', '200K-400K', '400K-600K', '600K-1M', '>1M']
-df['Income Bracket'] = pd.cut(df['AMT_INCOME_TOTAL'], bins=bins, labels=labels)
-default_rate = df.groupby('Income Bracket')['TARGET'].mean()
-default_rate.plot(kind='bar', color='skyblue', edgecolor='black', ax=ax)
-plt.title('Default Rate by Income Bracket')
-plt.xlabel('Income Bracket')
-plt.ylabel('Default Rate')
-plt.xticks(rotation=45)
-st.pyplot(fig)
+col9,col10 = st.columns(2)
+with col9:
+    # Bar — Income Brackets vs Default Rate
+    fig, ax = plt.subplots(figsize=(10,8))
+    bins = [0, 100000, 200000, 400000, 600000, 1_000_000, np.inf]
+    labels = ['<100K', '100K-200K', '200K-400K', '400K-600K', '600K-1M', '>1M']
+    df['Income Bracket'] = pd.cut(df['AMT_INCOME_TOTAL'], bins=bins, labels=labels)
+    default_rate = df.groupby('Income Bracket')['TARGET'].mean()
+    default_rate.plot(kind='bar', color='skyblue', edgecolor='black', ax=ax)
+    plt.title('Default Rate by Income Bracket')
+    plt.xlabel('Income Bracket')
+    plt.ylabel('Default Rate')
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
 
-# 10. Heatmap — Correlation of Financial Variables
-fig, ax = plt.subplots(figsize=(10,8))
-corr_cols = ['AMT_INCOME_TOTAL', 'AMT_CREDIT', 'AMT_ANNUITY', 'DTI', 'LTI', 'TARGET']
-corr = df[corr_cols].corr()
-sns.heatmap(corr, annot=True, cmap='coolwarm')
-plt.title('Correlation Heatmap - Financial Variables')
-st.pyplot(fig)
+with col10:
+    #  Heatmap — Correlation of Financial Variables
+    fig, ax = plt.subplots(figsize=(10,8))
+    corr_cols = ['AMT_INCOME_TOTAL', 'AMT_CREDIT', 'AMT_ANNUITY', 'DTI', 'LTI', 'TARGET']
+    corr = df[corr_cols].corr()
+    sns.heatmap(corr, annot=True, cmap='coolwarm')
+    plt.title('Correlation Heatmap - Financial Variables')
+    st.pyplot(fig)
 
 #=========================================================
 # Narrative Insights

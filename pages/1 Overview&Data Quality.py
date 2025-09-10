@@ -59,84 +59,101 @@ st.subheader("📈 Data Distributions")
 # Graphs
 #==================================================
 
-# 1.Pie / Donut — Target distribution (0 vs 1)
-fig, ax = plt.subplots(figsize=(7,4))
-df['TARGET'].value_counts().plot.pie(
+col1,col2 = st.columns(2)
+with col1:
+    #Pie — Target distribution (0 vs 1)
+    fig, ax = plt.subplots(figsize=(8,5))
+    df['TARGET'].value_counts().plot.pie(
     labels=['Repaid (0)', 'Default (1)'],
     autopct='%1.1f%%',
-    startangle=90,
+    startangle=0,
     colors=['skyblue', 'salmon'],ax=ax
-)
-plt.title("Target Distribution")
-plt.ylabel("")
-st.pyplot(fig)
+    )
+    plt.title("Target Distribution")
+    plt.ylabel("")
+    st.pyplot(fig)
 
-# 2. Bar — Top 20 features by missing %
-missing = df.isnull().mean() * 100
-top_missing = missing.sort_values(ascending=False).head(20)
-fig, ax = plt.subplots(figsize=(7, 4))
-sns.barplot(x=top_missing.values, y=top_missing.index, palette="viridis",ax=ax)
-plt.xlabel("Missing %")
-plt.title("Top 20 Features by Missing %")
-st.pyplot(fig)
+with col2:
+    #Bar — Top 20 features by missing %
+    missing = df.isnull().mean() * 100
+    top_missing = missing.sort_values(ascending=False).head(20)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.barplot(x=top_missing.values, y=top_missing.index, palette="viridis",ax=ax)
+    plt.xlabel("Missing %")
+    plt.title("Top 20 Features by Missing %")
+    st.pyplot(fig)
 
-# 3. Histogram — AGE_YEARS
-fig, ax = plt.subplots(figsize=(7, 4))
-sns.histplot(df['AGE_YEARS'], bins=40, color="teal",ax=ax)
-plt.xlabel("Age (Years)")
-plt.title("Age Distribution")
-st.pyplot(fig)
+col3,col4 = st.columns(2)
+with col3:
+    #Histogram — AGE_YEARS
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.histplot(df['AGE_YEARS'], bins=40, color="teal",ax=ax)
+    plt.xlabel("Age (Years)")
+    plt.title("Age Distribution")
+    st.pyplot(fig)
 
-# 4. Histogram — AMT_INCOME_TOTAL
-fig, ax = plt.subplots(figsize=(7, 4))
-sns.histplot(df['AMT_INCOME_TOTAL'], bins=40, color="orange",ax=ax)
-plt.xlabel("Annual Income")
-plt.title("Income Distribution")
-st.pyplot(fig)
+with col4:
+    #Bar — Family Status distribution
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.histplot(df['AMT_INCOME_TOTAL'], bins=40, color="orange",ax=ax)
+    plt.xlabel("Annual Income")
+    plt.title("Income Distribution")
+    st.pyplot(fig)
 
-# 5. Histogram — AMT_CREDIT
-fig, ax = plt.subplots(figsize=(7, 4))
-sns.histplot(df['AMT_CREDIT'], bins=40, color="purple",ax=ax)
-plt.xlabel("Credit Amount")
-plt.title("Credit Amount Distribution")
-plt.show()
-st.pyplot(fig)
+col5,col6 = st.columns(2)
 
-# 6. Boxplot — AMT_INCOME_TOTAL
-fig, ax = plt.subplots(figsize=(7, 4))
-sns.boxplot(x=df['AMT_INCOME_TOTAL'], color="orange",ax=ax)
-plt.xlabel("Annual Income")
-plt.title("Boxplot: Income")
-st.pyplot(fig)
+with col5:
+    #Bar — Education distribution
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.histplot(df['AMT_CREDIT'], bins=40, color="purple",ax=ax)
+    plt.xlabel("Credit Amount")
+    plt.title("Credit Amount Distribution")
+    plt.show()
+    st.pyplot(fig)
 
-# 7. Boxplot — AMT_CREDIT
-fig, ax = plt.subplots(figsize=(7, 4))
-sns.boxplot(x=df['AMT_CREDIT'], color="purple",ax=ax)
-plt.xlabel("Credit Amount")
-plt.title("Boxplot: Credit Amount")
-st.pyplot(fig)
+with col6:
+    #Bar — Occupation distribution (top 10)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.boxplot(x=df['AMT_INCOME_TOTAL'], color="orange",ax=ax)
+    plt.xlabel("Annual Income")
+    plt.title("Boxplot: Income")
+    st.pyplot(fig)
 
-# 8. Countplot — CODE_GENDER
-fig, ax = plt.subplots(figsize=(7, 4))
-sns.countplot(x='CODE_GENDER', data=df, palette="Set2")
-plt.title("Gender Distribution")
-st.pyplot(fig)
+col7,col8 = st.columns(2)
+with col7:
+    #Pie — Housing Type distribution
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.boxplot(x=df['AMT_CREDIT'], color="purple",ax=ax)
+    plt.xlabel("Credit Amount")
+    plt.title("Boxplot: Credit Amount")
+    st.pyplot(fig)
 
-# 9. Countplot — NAME_FAMILY_STATUS
-fig, ax = plt.subplots(figsize=(7, 4))
-sns.countplot(y='NAME_FAMILY_STATUS', data=df,
+with col8:
+    #Countplot — CNT_CHILDREN
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.countplot(x='CODE_GENDER', data=df, palette="Set2")
+    plt.title("Gender Distribution")
+    st.pyplot(fig)
+
+col9,col10 = st.columns(2)
+with col9:
+    # Boxplot — Age vs Target
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.countplot(y='NAME_FAMILY_STATUS', data=df,
               order=df['NAME_FAMILY_STATUS'].value_counts().index,
               palette="Set1")
-plt.title("Family Status Distribution")
-st.pyplot(fig)
+    plt.title("Family Status Distribution")
+    st.pyplot(fig)
 
-# 10. Countplot — NAME_EDUCATION_TYPE
-fig, ax = plt.subplots(figsize=(7, 4))
-sns.countplot(y='NAME_EDUCATION_TYPE', data=df,
+with col10:
+    # Heatmap — Corr(Age, Children, Family Size, TARGET)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.countplot(y='NAME_EDUCATION_TYPE', data=df,
               order=df['NAME_EDUCATION_TYPE'].value_counts().index,
               palette="Set3")
-plt.title("Education Type Distribution")
-st.pyplot(fig)
+    plt.title("Education Type Distribution")
+    st.pyplot(fig)
+
 #==================================================================================
 # Narrative Insights
 #==================================================================================

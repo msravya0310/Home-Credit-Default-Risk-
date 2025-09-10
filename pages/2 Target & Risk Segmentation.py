@@ -64,76 +64,90 @@ st.subheader("📈 Risk Segment Visuals")
 # Graphs
 #==================================================
 
+col1,col2 = st.columns(2)
+with col1:
+    #  Bar — Counts: Default vs Repaid
+     fig, ax = plt.subplots(figsize=(8,5))
+     sns.countplot(x="TARGET", data=df)
+     plt.title("Counts: Default vs Repaid")
+     st.pyplot(fig)
 
-# 1. Bar — Counts: Default vs Repaid
-fig, ax = plt.subplots(figsize=(8,5))
-sns.countplot(x="TARGET", data=df)
-plt.title("Counts: Default vs Repaid")
-st.pyplot(fig)
+with col2:
+    #  Bar — Default % by Gender
+    fig, ax = plt.subplots(figsize=(8,5))
+    gender_default = df.groupby("CODE_GENDER")["TARGET"].mean()
+    gender_default.plot(kind="bar")
+    plt.title("Default % by Gender")
+    plt.ylabel("Default %")
+    st.pyplot(fig)
 
-# 2. Bar — Default % by Gender
-fig, ax = plt.subplots(figsize=(8,5))
-gender_default = df.groupby("CODE_GENDER")["TARGET"].mean()
-gender_default.plot(kind="bar")
-plt.title("Default % by Gender")
-plt.ylabel("Default %")
+col3,col4 = st.columns(2)
 
-# 3. Bar — Default % by Education
-fig, ax = plt.subplots(figsize=(8,5))
-edu_default = df.groupby("NAME_EDUCATION_TYPE")["TARGET"].mean()
-edu_default.plot(kind="bar")
-plt.title("Default % by Education")
-plt.ylabel("Default %")
-st.pyplot(fig)
+with col3:
+    #  Bar — Default % by Education
+    fig, ax = plt.subplots(figsize=(8,5))
+    edu_default = df.groupby("NAME_EDUCATION_TYPE")["TARGET"].mean()
+    edu_default.plot(kind="bar")
+    plt.title("Default % by Education")
+    plt.ylabel("Default %")
+    st.pyplot(fig)
 
-# Default % by Family Status
-fig, ax = plt.subplots(figsize=(8,5))
-fam_default = df.groupby("NAME_FAMILY_STATUS")["TARGET"].mean()
-fam_default.plot(kind="bar")
-plt.title("Default % by Family Status")
-plt.ylabel("Default %")
-st.pyplot(fig)
+with col4:   
+    # Default % by Family Status
+    fig, ax = plt.subplots(figsize=(8,5))
+    fam_default = df.groupby("NAME_FAMILY_STATUS")["TARGET"].mean()
+    fam_default.plot(kind="bar")
+    plt.title("Default % by Family Status")
+    plt.ylabel("Default %")
+    st.pyplot(fig)
 
-# 5. Bar — Default % by Housing Type
-fig, ax = plt.subplots(figsize=(8,5))
-house_default = df.groupby("NAME_HOUSING_TYPE")["TARGET"].mean()
-house_default.plot(kind="bar")
-plt.title("Default % by Housing Type")
-plt.ylabel("Default %")
-st.pyplot(fig)
+col5,col6 = st.columns(2)
+with col5:
+    # 5. Bar — Default % by Housing Type
+    fig, ax = plt.subplots(figsize=(8,5))
+    house_default = df.groupby("NAME_HOUSING_TYPE")["TARGET"].mean()
+    house_default.plot(kind="bar")
+    plt.title("Default % by Housing Type")
+    plt.ylabel("Default %")
+    st.pyplot(fig)
 
-# 6. Boxplot — Income by Target
-fig, ax = plt.subplots(figsize=(8,5))
-sns.boxplot(x="TARGET", y="AMT_INCOME_TOTAL", data=df)
-plt.title("Income by Target")
-st.pyplot(fig)
+with col6:
+    #  Boxplot — Income by Target
+    fig, ax = plt.subplots(figsize=(8,5))
+    sns.boxplot(x="TARGET", y="AMT_INCOME_TOTAL", data=df)
+    plt.title("Income by Target")
+    st.pyplot(fig)
 
-# 7. Boxplot — Credit by Target
-fig, ax = plt.subplots(figsize=(8,5))
-sns.boxplot(x="TARGET", y="AMT_CREDIT", data=df)
-plt.title("Credit by Target")
-st.pyplot(fig)
+col7,col8 = st.columns(2)
+with col7:
+    #  Boxplot — Credit by Target
+    fig, ax = plt.subplots(figsize=(8,5))
+    sns.boxplot(x="TARGET", y="AMT_CREDIT", data=df)
+    plt.title("Credit by Target")
+    st.pyplot(fig)
+with col8:
+    #  Violin — Age vs Target
+    fig, ax = plt.subplots(figsize=(8,5))
+    sns.violinplot(x="TARGET", y="DAYS_BIRTH", data=df)
+    st.pyplot(fig)
 
-# 8. Violin — Age vs Target
-fig, ax = plt.subplots(figsize=(8,5))
-sns.violinplot(x="TARGET", y="DAYS_BIRTH", data=df)
-st.pyplot(fig)
+col9,col10 = st.columns(2)
+with col9:
+    #  Histogram (stacked) — EMPLOYMENT_YEARS by Target
+    fig, ax = plt.subplots(figsize=(8,5))
+    df["EMP_YEARS"] = (-df["DAYS_EMPLOYED"] / 365).astype(int)
+    sns.histplot(data=df, x="EMP_YEARS", hue="TARGET", multiple="stack")
+    plt.title("Employment Years by Target")
+    st.pyplot(fig)
 
-# 9. Histogram (stacked) — EMPLOYMENT_YEARS by Target
-fig, ax = plt.subplots(figsize=(8,5))
-df["EMP_YEARS"] = (-df["DAYS_EMPLOYED"] / 365).astype(int)
-sns.histplot(data=df, x="EMP_YEARS", hue="TARGET", multiple="stack")
-plt.title("Employment Years by Target")
-st.pyplot(fig)
-
-
-# 10. Stacked Bar — Contract type vs Target
-fig, ax = plt.subplots(figsize=(8,5))
-contract_dist = df.groupby(["NAME_CONTRACT_TYPE", "TARGET"]).size().unstack(fill_value=0)
-contract_dist.plot(kind="bar", stacked=True, ax=ax, color=["#3A993D", "#F44336"])
-ax.set_ylabel("Count")
-ax.set_xlabel("Contract Type")
-st.pyplot(fig)
+with col10:
+    #  Stacked Bar — Contract type vs Target
+    fig, ax = plt.subplots(figsize=(8,5))
+    contract_dist = df.groupby(["NAME_CONTRACT_TYPE", "TARGET"]).size().unstack(fill_value=0)
+    contract_dist.plot(kind="bar", stacked=True, ax=ax, color=["#3A993D", "#F44336"])
+    ax.set_ylabel("Count")
+    ax.set_xlabel("Contract Type")
+    st.pyplot(fig)
 # -----------------------------
 # Narrative Insights
 # -----------------------------
